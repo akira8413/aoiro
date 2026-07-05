@@ -13,10 +13,14 @@ export async function POST(req: Request) {
   }
 
   const res = NextResponse.json({ ok: true });
+  const forwardedProto = req.headers.get("x-forwarded-proto");
+  const cookieSecure =
+    process.env.COOKIE_SECURE === "true" ||
+    (process.env.COOKIE_SECURE !== "false" && forwardedProto === "https");
   res.cookies.set(AUTH_COOKIE, sessionToken(configured), {
     httpOnly: true,
     sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
+    secure: cookieSecure,
     path: "/",
     maxAge: 60 * 60 * 24 * 30,
   });
