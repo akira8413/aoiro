@@ -1,0 +1,14 @@
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: aoiro
+      POSTGRES_PASSWORD: aoiro_password
+      POSTGRES_DB: aoiro
+    ports:
+      - "5434:5432"
+    volumes:
+      - aoiro_pgdata:/var/lib/postgresql/data
+
+volumes:
+  aoiro_pgdata:
